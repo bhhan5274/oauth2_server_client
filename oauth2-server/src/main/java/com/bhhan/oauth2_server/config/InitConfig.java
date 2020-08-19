@@ -41,7 +41,7 @@ public class InitConfig {
             accountService.addClientDetails(account.getId(), ClientDetailsDto.builder()
                     .webServerRedirectUri(Sets.newLinkedHashSet("http://localhost:8081/oauth2/callback"))
                     .authorizedGrantTypes(Sets.newLinkedHashSet("authorization_code", "password"))
-                    .scope(Sets.newLinkedHashSet("read", "write"))
+                    .scope(Sets.newLinkedHashSet("read", "write", "delete", "update"))
                     .build());
         };
     }

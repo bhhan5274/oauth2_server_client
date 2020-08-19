@@ -1,0 +1,4 @@
+oauth2:
+  jwtSigningKey: HelloWorld
+server:
+  port: 8081
