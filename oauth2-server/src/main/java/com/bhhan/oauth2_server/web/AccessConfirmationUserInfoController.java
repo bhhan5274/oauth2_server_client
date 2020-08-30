@@ -1,14 +1,17 @@
 package com.bhhan.oauth2_server.web;
 
+import com.bhhan.oauth2_server.service.AccountService;
+import com.bhhan.oauth2_server.service.dto.AccountDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.oauth2.provider.AuthorizationRequest;
 import org.springframework.security.oauth2.provider.ClientDetails;
 import org.springframework.security.oauth2.provider.ClientDetailsService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.ServletRequest;
 
 /**
  * Created by hbh5274@gmail.com on 2020-08-18
@@ -18,8 +21,9 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 @Controller
 @SessionAttributes(types = AuthorizationRequest.class)
 @RequiredArgsConstructor
-public class AccessConfirmationController {
+public class AccessConfirmationUserInfoController {
     private final ClientDetailsService clientDetailsService;
+    private final AccountService accountService;
 
     @RequestMapping("/oauth/confirm_access")
     public String getAccessConfirmation(@ModelAttribute AuthorizationRequest clientAuth, Model model){
@@ -29,5 +33,12 @@ public class AccessConfirmationController {
         model.addAttribute("client", client);
 
         return "access_confirmation";
+    }
+
+    @ResponseBody
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/oauth/user_info")
+    public AccountDto.AccountInfo getUserInfo(ServletRequest servletRequest){
+        return accountService.getAccountInfo((String) servletRequest.getAttribute("email"));
     }
 }

@@ -39,6 +39,24 @@ public class AccountService implements UserDetailsService {
     private final PasswordEncoder passwordEncoder;
     private final ClientDetailsMapper clientDetailsMapper;
 
+    public AccountDto.AccountInfo getAccountInfo(Long accountId){
+        final Account account = accountRepository.findById(accountId)
+                .orElseThrow(() -> new AccountException("Account를 찾을 수 없습니다."));
+
+        return AccountDto.AccountInfo.builder()
+                .account(account)
+                .build();
+    }
+
+    public AccountDto.AccountInfo getAccountInfo(String email){
+        final Account account = accountRepository.findByEmail(email)
+                .orElseThrow(() -> new AccountException("Account를 찾을 수 없습니다."));
+
+        return AccountDto.AccountInfo.builder()
+                .account(account)
+                .build();
+    }
+
     public AccountDto.AccountClientDetailsRes addClientDetails(Long accountId, ClientDetailsDto clientDetailsDto){
 
         try {
@@ -46,6 +64,24 @@ public class AccountService implements UserDetailsService {
                     .orElseThrow(IllegalArgumentException::new);
 
             insertClientIdAndClientSecret(clientDetailsDto);
+            account.addClientDetails(clientDetailsMapper.clientDetailsReqToClientDetails(clientDetailsDto));
+
+            return AccountDto.AccountClientDetailsRes.builder()
+                    .accountId(accountId)
+                    .clientDetailsDto(clientDetailsDto)
+                    .build();
+
+        }catch (Exception e){
+            throw new AccountException("Account ClientDetails 추가에 실패했습니다.");
+        }
+    }
+
+    public AccountDto.AccountClientDetailsRes addClientDetailsWithClientIdAndClientSecret(Long accountId, ClientDetailsDto clientDetailsDto){
+
+        try {
+            final Account account = accountRepository.findById(accountId)
+                    .orElseThrow(IllegalArgumentException::new);
+
             account.addClientDetails(clientDetailsMapper.clientDetailsReqToClientDetails(clientDetailsDto));
 
             return AccountDto.AccountClientDetailsRes.builder()
@@ -84,6 +120,7 @@ public class AccountService implements UserDetailsService {
 
             final Account account = Account.builder()
                     .email(accountReq.getEmail())
+                    .name(accountReq.getName())
                     .password(encodingPassword(accountReq.getPassword()))
                     .roles(roles)
                     .build();

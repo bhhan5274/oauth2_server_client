@@ -1,5 +1,6 @@
 package com.bhhan.oauth2_server.service.dto;
 
+import com.bhhan.oauth2_server.domain.Account;
 import lombok.*;
 
 import javax.validation.constraints.Email;
@@ -18,9 +19,27 @@ public class AccountDto {
     @Setter
     @Getter
     @NoArgsConstructor(access = AccessLevel.PROTECTED)
+    public static class AccountInfo {
+        private String id;
+        private String name;
+        private String email;
+
+        @Builder
+        public AccountInfo(Account account){
+            this.id = String.valueOf(account.getId());
+            this.name = account.getName();
+            this.email = account.getEmail();
+        }
+    }
+
+    @Setter
+    @Getter
+    @NoArgsConstructor(access = AccessLevel.PROTECTED)
     public static class AccountReq {
         @Email(message = "잘못된 Email 형식입니다.")
         private String email;
+
+        private String name;
 
         @Pattern(regexp = "^[!@#$%^&*A-Za-z0-9_-]{8,20}$", message = "잘못된 Password 형식입니다.")
         private String password;
@@ -30,7 +49,8 @@ public class AccountDto {
         private List<Long> roleIds;
 
         @Builder
-        public AccountReq(String email, String password, List<Long> roleIds){
+        public AccountReq(String name, String email, String password, List<Long> roleIds){
+            this.name = name;
             this.email = email;
             this.password = password;
             this.roleIds = roleIds;

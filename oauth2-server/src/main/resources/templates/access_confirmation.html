@@ -22,7 +22,7 @@
             <p class="font-weight-bold">Do you authorize <span class="font-weight-bold text-primary" th:text="${client.clientId}"></span> to access your protected resources?</p>
             <form class="user" action="/oauth/authorize" method="post">
                 <input name="user_oauth_approval" value="true" type="hidden">
-                <div class="form-group" th:each="scope: ${client.scope}">
+                <div class="form-group" th:each="scope: ${auth_request.scope}">
                     <label th:text="${scope}"></label>
                     <div class="custom-control custom-radio">
                         <input type="radio" th:id="${scope} + 'Approve'" th:name="'scope.' + ${scope}" value="true" class="custom-control-input">

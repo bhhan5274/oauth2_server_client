@@ -27,6 +27,9 @@ public class Account {
 
     @Column(unique = true)
     private String email;
+
+    private String name;
+
     private String password;
 
     @ManyToMany
@@ -39,9 +42,10 @@ public class Account {
     private List<ClientDetails> clientDetailsList = new ArrayList<>();
 
     @Builder
-    public Account(Long id, String email, String password, List<Role> roles, List<ClientDetails> clientDetailsList){
+    public Account(Long id, String email, String name, String password, List<Role> roles, List<ClientDetails> clientDetailsList){
         this.id = id;
         this.email = email;
+        this.name = name;
         this.password = password;
 
         if(Objects.nonNull(roles)){

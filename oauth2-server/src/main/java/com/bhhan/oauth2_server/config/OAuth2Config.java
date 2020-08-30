@@ -37,7 +37,6 @@ public class OAuth2Config extends AuthorizationServerConfigurerAdapter {
     private final DataSource dataSource;
     private final AuthenticationManager authenticationManager;
     private final OAuth2Properties oAuth2Properties;
-    private final PasswordEncoder passwordEncoder;
 
     @Bean
     public AuthorizationCodeServices authorizationCodeServices(){

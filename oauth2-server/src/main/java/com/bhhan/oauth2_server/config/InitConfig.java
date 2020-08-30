@@ -33,16 +33,21 @@ public class InitConfig {
             final Role role2 = roleService.addRole(RoleDto.RoleReq.builder().name("USER").build());
 
             final Account account = accountService.addAccount(AccountDto.AccountReq.builder()
+                    .name("testUser")
                     .email("test@email.com")
-                    .password("helloworld123")
+                    .password("12345678")
                     .roleIds(Arrays.asList(role1.getId(), role2.getId()))
                     .build());
 
-            accountService.addClientDetails(account.getId(), ClientDetailsDto.builder()
-                    .webServerRedirectUri(Sets.newLinkedHashSet("http://localhost:8081/oauth2/callback"))
+            final ClientDetailsDto clientDetailsDto = ClientDetailsDto.builder()
+                    .clientId("a9e0318d-13c7-4036-8d29-abc2adbb4917")
+                    .clientSecret("de5038aa-c0b7-4e32-ac02-c18ad841f0b3")
+                    .webServerRedirectUri(Sets.newLinkedHashSet("http://localhost:8082/login/oauth2/code/bhhan"))
                     .authorizedGrantTypes(Sets.newLinkedHashSet("authorization_code", "password"))
-                    .scope(Sets.newLinkedHashSet("read", "write", "delete", "update"))
-                    .build());
+                    .scope(Sets.newLinkedHashSet("name", "email", "read"))
+                    .build();
+
+            accountService.addClientDetailsWithClientIdAndClientSecret(account.getId(), clientDetailsDto);
         };
     }
 }

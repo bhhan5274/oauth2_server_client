@@ -1,0 +1,20 @@
+{{>layout/header}}
+<h1>OAuth2 Client</h1>
+<div class="col-md-12">
+    <div class="row">
+        <div class="col-md-6">
+            {{#loginName}}
+                Logged in as: <span id="user">{{loginName}}</span>&nbsp;&nbsp;
+                Email : <span id="email">{{email}}</span>
+                <a href="/logout" class="btn btn-info active" role="button">Logout</a>
+            {{/loginName}}
+            {{^loginName}}
+                <a href="/oauth2/authorization/google" class="btn btn-success active" role="button">Google Login</a>
+                <a href="/oauth2/authorization/naver" class="btn btn-secondary active" role="button">Naver Login</a>
+                <a href="/oauth2/authorization/bhhan" class="btn btn-danger active" role="button">Bhhan Login</a>
+                <a href="/oauth2/authorization/kakao" class="btn btn-warning active" role="button">Kakao Login</a>
+            {{/loginName}}
+        </div>
+    </div>
+</div>
+{{>layout/footer}}
